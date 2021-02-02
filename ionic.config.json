@@ -1,0 +1,7 @@
+{
+  "name": "ionic-geo-api",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
