@@ -4,27 +4,27 @@ import Tabs from '../views/Tabs.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/tabs/tab1'
+    redirect: '/home/communes'
   },
   {
-    path: '/tabs/',
+    path: '/home/',
     component: Tabs,
     children: [
       {
         path: '',
-        redirect: '/tabs/tab1'
+        redirect: '/home/communes'
       },
       {
-        path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        path: 'communes',
+        component: () => import('@/views/Communes.vue')
       },
       {
-        path: 'tab2',
-        component: () => import('@/views/Tab2.vue')
+        path: 'departements',
+        component: () => import('@/views/Departements.vue')
       },
       {
-        path: 'tab3',
-        component: () => import('@/views/Tab3.vue')
+        path: 'regions',
+        component: () => import('@/views/Regions.vue')
       }
     ]
   }
@@ -33,6 +33,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
 export default router
