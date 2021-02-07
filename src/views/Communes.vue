@@ -4,7 +4,6 @@
             <ion-toolbar>
                 <div class="d-flex flex-row">
                     <ion-title> Communes</ion-title>
-                    <ion-title slot="end" class="ion-no-padding w-auto"> 🇫🇷 France</ion-title>
                 </div>
             </ion-toolbar>
         </ion-header>
@@ -21,7 +20,7 @@
                 <Search></Search>
 
                 <!-- Affichage du nombre de résultat -->
-                <p class="text-center mt-2 m-3" id="pNumberOf"> </p>
+                <p class="text-center mt-2 m-3" id="pCommunesNumberOf"> </p>
 
                 <!-- Composant qui affichera toutes les communes renvoyées -->
                 <Commune></Commune>
@@ -52,10 +51,16 @@
             this.bus.on("displayNumberOfCommunes", number => {
 
                 if(number !== 0)
-                    document.getElementById('pNumberOf').innerHTML = number + (number > 1 ? ' Résultats' : ' Résultat');
+                    document.getElementById('pCommunesNumberOf').innerHTML = '<strong>' + number  + '</strong>' + (number > 1 ? ' Résultats' : ' Résultat');
                 else{ //Si il n'y a aucun résultats
-                    document.getElementById('pNumberOf').innerHTML = 'Aucun résultats. Veuillez tentez autre chose.';
+                    document.getElementById('pCommunesNumberOf').innerHTML = 'Aucun résultats. Veuillez tenter autre chose.';
                 }
+
+            });
+
+            this.bus.on("errorCommunes", error => {
+
+                document.getElementById('pCommunesNumberOf').innerHTML = error
 
             });
         }

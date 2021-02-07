@@ -14,12 +14,13 @@
 
             <div id="container">
 
-
+                <!-- Search -->
+                <SearchList></SearchList>
 
                 <!-- Affichage du nombre de résultat -->
-                <p class="text-center mt-2 m-3" id="pNumberOf"> </p>
+                <p class="text-center mt-2 m-3" id="pDepartementNumberOf"> </p>
 
-
+                <Departement></Departement>
 
             </div>
 
@@ -29,6 +30,8 @@
 
 <script>
     import {IonPage, IonHeader, IonToolbar, IonTitle, IonContent} from '@ionic/vue';
+    import SearchList from "../components/SearchList.vue";
+    import Departement from "../components/Departement.vue";
 
     export default {
         name: 'Departements',
@@ -38,15 +41,24 @@
             IonTitle,
             IonContent,
             IonPage,
+            SearchList,
+            Departement
         },
         mounted(){
+
             this.bus.on("displayNumberOfDepartements", number => {
 
                 if(number !== 0)
-                    document.getElementById('pNumberOf').innerHTML = number + (number > 1 ? ' Résultats' : ' Résultat');
+                    document.getElementById('pDepartementNumberOf').innerHTML = number + (number > 1 ? ' Résultats' : ' Résultat');
                 else{ //Si il n'y a aucun résultats
-                    document.getElementById('pNumberOf').innerHTML = 'Aucun résultats. Veuillez tentez autre chose.';
+                    document.getElementById('pDepartementNumberOf').innerHTML = 'Aucun résultats. Veuillez tenter autre chose.';
                 }
+
+            });
+
+            this.bus.on("errorDepartements", error => {
+
+                document.getElementById('pDepartementNumberOf').innerHTML = error;
 
             });
         }

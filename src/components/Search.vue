@@ -13,7 +13,7 @@
                     <ion-input placeholder="78630 ou Orgeval" class="ion-text-center" id="inputCommune" type="text"></ion-input>
                 </ion-row>
                 <ion-row class="mt-3 mb-2">
-                    <ion-button class="m-auto w-100" @click="(this.displayCommunes)"> Valider </ion-button>
+                    <ion-button class="m-auto w-100" @click="displayCommunes"> Valider </ion-button>
                 </ion-row>
             </ion-grid>
         </ion-item>
@@ -56,28 +56,31 @@
                 let queryType = null; //queryType qui servira a orienter la requete en fonction de l'input
 
                 //Test de si l'input est vide
-                if(inputCommune === '')
+                if(inputCommune !== "")
                 {
-                    console.log('vide')
+                    //Si c'est int, on lance la requete avec le code postal
+                    if(Number.isInteger(inputParseInt))
+                        queryType = 'codePostal';
+                    else //Sinon on lance la requete normale, avec le nom
+                        queryType = 'nom';
+
+                    //Requete avec le nom passé en input
+                    axios.get('https://geo.api.gouv.fr/communes?'+ queryType + '=' + inputCommune + '&boost=population').then((response) => {
+
+                        this.bus.emit("displayCommunes", response.data);
+                        this.bus.emit("displayNumberOfCommunes", response.data.length);
+
+                    }).catch((error) => {
+
+                        console.log(error)
+
+                    })
+                }else{
+
+                    this.bus.emit("errorCommunes", "Aucune commune recherchée, erreur.")
+
                 }
 
-                //Si c'est int, on lance la requete avec le code postal
-                if(Number.isInteger(inputParseInt))
-                    queryType = 'codePostal';
-                else //Sinon on lance la requete normale, avec le nom
-                    queryType = 'nom';
-
-                //Requete avec le nom passé en input
-                axios.get('https://geo.api.gouv.fr/communes?'+ queryType + '=' + inputCommune + '&boost=population').then((response) => {
-
-                    this.bus.emit("displayCommunes", response.data);
-                    this.bus.emit("displayNumberOfCommunes", response.data.length);
-
-                }).catch((error) => {
-
-                    console.log(error)
-
-                })
             }
         },
         mounted(){
